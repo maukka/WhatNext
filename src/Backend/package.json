@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "REST router for WhatsNext app.",
+  "homepage": "https://github.com/maukka/WhatNext#readme",
+  "bugs": {
+    "url": "https://github.com/maukka/WhatNext/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maukka/WhatNext.git"
+  },
+  "license": "ISC",
+  "author": "Markus Veijola",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
