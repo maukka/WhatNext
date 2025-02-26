@@ -44,15 +44,15 @@ export const Login: React.FC = () => {
         initialValues: {
             email: '',
             password: '',
-            confirmPassword: '', // Only needed for sign-up  
+            confirmPassword: '',
         },
         validationSchema: Yup.object({
             email: Yup.string()
                 .email('Invalid email format')
-                .required('*'),
+                .required('Email is required'),
             password: Yup.string()
                 .min(6, 'Password must be at least 6 characters')
-                .required('*'),
+                .required('Password is required'),
             confirmPassword: isLogin
                 ? Yup.string()
                 : Yup.string()
@@ -62,7 +62,7 @@ export const Login: React.FC = () => {
         onSubmit: async (values) => {
             // Handle submit logic
             var response;
-            if (isLogin) {
+            if (isLogin && (!formik.errors.confirmPassword && formik.errors.email)) {
                 response = await axios.post('http://localhost:4000/api/login', {
                     values,
                 });
@@ -83,10 +83,10 @@ export const Login: React.FC = () => {
     return (
         <>
             {/* Adjust the form in vertically center*/}
-            <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: 'lightgrey' }}>
                 {/* Adjust the form horizontally center, make sure maximum width is 400px*/}
                 <div className="w-100" style={{ maxWidth: '400px' }}>
-                    <h2 className="mb-4 text-center">{isLogin ? 'Login' : 'Sign Up'}</h2>
+                    <h2 className="mb-4 text-center" style={{ backgroundColor: 'orange', padding: "10px", borderRadius: "15px" }}>{isLogin ? 'Login' : 'Sign Up'} to What Next</h2>
                     <Form onSubmit={formik.handleSubmit}>
                         <FormGroup className='mb-3' controlId="formGroupEmail">
                             {formik.touched.email && formik.errors.email ? (
@@ -116,7 +116,7 @@ export const Login: React.FC = () => {
                         </FormGroup>
                         {!isLogin && (
                             <FormGroup className='mb-3' controlId="formGroupPasswordConfirm">
-                                <Form.Label htmlFor="confirmPassword">Confirm Password</Form.Label>
+                                <Form.Label controlId="confirmPassword">Confirm Password</Form.Label>
                                 <Form.Control
                                     type="password"
                                     {...formik.getFieldProps('confirmPassword')}
@@ -127,9 +127,9 @@ export const Login: React.FC = () => {
                             </FormGroup>
                         )}
                         <FormGroup className='mp-3' controlId='formGroupSubmit'>
-                            <Button variant="primary" type="submit" active>{isLogin ? 'Login' : 'Sign Up'}</Button>
+                            <Button variant="primary" disabled={Object.keys(formik.errors).length > 0} type="submit" active>{isLogin ? 'Login' : 'Sign Up'}</Button>
                         </FormGroup>
-                        <FormGroup controlId='formGroupSignUp'>
+                        <FormGroup style={{ marginTop: '10px' }} controlId='formGroupSignUp'>
                             <a href="#" onClick={(e) => { e.preventDefault(); setIsLogin(!isLogin); }}>{isLogin ? 'SignUp' : 'Login'}</a>
                         </FormGroup>
                     </Form >
