@@ -2,6 +2,7 @@ import { useLogin } from './LoginProvider';
 import { useState, useEffect } from 'react';
 const [loading, setLoading] = useState(true);
 import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
 
 export const Tasks: React.FC = () => {
     const context = useLogin();
@@ -36,6 +37,25 @@ export const Tasks: React.FC = () => {
 
 
     return (
-        <h1>HelloWorld {username}</h1>
+        <>
+            {loading &&
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            }
+            {error && error.length > 0 &&
+                <h3>Error while loading data: {error}</h3>
+            }
+            {tasks.map(task => (
+                <Card key={task._id} className="mb-2" bg="primary" style={{ width: '18rem' }}>
+                    <Card.Header>{username}</Card.Header>
+                    <Card.Body>
+                        <Card.Title>{task.title}</Card.Title>
+                        <Card.Text>{task.description}</Card.Text>
+                        <Card.Footer>Created at: {task.createdAt}</Card.Footer>
+                    </Card.Body>
+                </Card>
+            ))}
+        </>
     )
 };
